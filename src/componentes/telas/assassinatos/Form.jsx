@@ -17,7 +17,7 @@ function Form() {
                 name="id" value={objeto.id} onchange={handleChange}
                 msgvalido="" msginvalido=""
                 readonly={true} />
-            <CampoEntrada id="txtData" label="Data" tipo="text"
+            <CampoEntrada id="txtData" label="Data" tipo="date"
                 placeholder="Informe a data do ocorrido: " requerido="true"
                 name="data" value={objeto.data} onchange={handleChange}
                 msgvalido="Campo data OK" msginvalido="Informe a data"
