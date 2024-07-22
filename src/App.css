@@ -1,0 +1,13 @@
+body {
+  background-color: #000; /* Fundo preto */
+  color: #fff; /* Texto branco */
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove preenchimento padrão */
+  font-family: Arial, sans-serif; /* Define uma fonte padrão */
+}
+
+/* Se você quiser garantir que outros elementos também sigam o mesmo esquema de cores */
+header, footer, main, section, article {
+  background-color: #000; /* Fundo preto */
+  color: #fff; /* Texto branco */
+}

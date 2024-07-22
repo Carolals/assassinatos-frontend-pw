@@ -1,0 +1,37 @@
+.statistics-container {
+    text-align: center;
+    padding: 2rem;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.statistics-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: red;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.stat-item {
+    background-color: #333;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: red;
+}
+
+.stat-item p {
+    font-size: 1.2rem;
+    margin: 0;
+}
