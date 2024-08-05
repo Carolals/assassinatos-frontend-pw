@@ -13,7 +13,7 @@ function Form() {
         <Dialogo id="modalEdicao" titulo="Usuario"
             idform="formulario" acaoCadastrar={acaoCadastrar}>
             <Alerta alerta={alerta} />
-            <CampoEntrada id="txtEmail" label="E-mail" tipo="email"
+            <CampoEntrada id="txtEmail" label="E-mail" tipo="string"
                 placeholder="Informe o e-mail" requerido="true"
                 name="email" value={objeto.email} onchange={handleChange}
                 msgvalido="Campo e-mail ok" msginvalido="Informe um e-mail"
