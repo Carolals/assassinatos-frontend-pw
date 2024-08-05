@@ -1,45 +1,41 @@
 import { useState, useEffect } from "react";
-import SuspeitoContext from "./SuspeitoContext";
+import UsuarioContext from "./UsuarioContext";
 import {
-    getSuspeitosAPI, getSuspeitoPorIdAPI,
-    deleteSuspeitoAPI, cadastraSuspeitoAPI
-} from "../../../servicos/SuspeitosServico";
-import { getAssassinatosAPI } from "../../../servicos/AssassinatosServico";
+    getUsuariosAPI, getUsuarioPorEmailAPI,
+    deleteUsuarioAPI, cadastraUsuarioAPI
+} from "../../../servicos/UsuariosServico";
 import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
 import WithAuth from "../../../seguranca/WithAuth";
 import { useNavigate } from "react-router-dom";
 
-function Suspeito() {
+function Usuario() {
 
     let navigate = useNavigate();
     
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
-    const [listaAssassinatos, setListaAssassinatos] = useState([]);
     const [editar, setEditar] = useState(false);
     const [objeto, setObjeto] = useState({
-        id: "", nome: "",
-        idade: "", genero: "",
-        relacaocomvitima: "",
-        assassinatoid: ""
+        email: "", senha: "",
+        tipo: "", telefone: "",
+        nome: ""
     });
 
     const novoObjeto = () => {
         setEditar(false);
         setAlerta({ status: "", message: "" });
         setObjeto({
-            id: "", nome: "",
-            idade: "", genero: "",
-            relacaocomvitima: "",
-            assassinatoid: ""
+            email: "", senha: "",
+            tipo: "", telefone: "",
+            nome: ""
         });
     }
 
-    const editarObjeto = async id => {
+    const editarObjeto = async email => {
         try{
-        setObjeto(await getSuspeitoPorIdAPI(id));
+        setObjeto(await getUsuarioPorEmailAPI(email));
         setEditar(true);
         setAlerta({ status: "", message: "" });
     } catch (err){
@@ -52,7 +48,7 @@ function Suspeito() {
         e.preventDefault();
         const metodo = editar ? "PUT" : "POST";
         try {
-            let retornoAPI = await cadastraSuspeitoAPI(objeto, metodo);
+            let retornoAPI = await cadastraUsuarioAPI(objeto, metodo);
             setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
             setObjeto(retornoAPI.objeto);
             if (!editar) {
@@ -62,7 +58,7 @@ function Suspeito() {
             window.location.reload();
             navigate("login", { replace : true});
         }
-        recuperaSuspeitos();
+        recuperaUsuarios();
     }
 
     const handleChange = (e) => {
@@ -73,10 +69,10 @@ function Suspeito() {
 
     const [carregando, setCarregando] = useState(false);
 
-    const recuperaSuspeitos = async () => {
+    const recuperaUsuarios = async () => {
         try{
         setCarregando(true);
-        setListaObjetos(await getSuspeitosAPI());
+        setListaObjetos(await getUsuariosAPI());
         setCarregando(false);
     } catch (err){
         window.location.reload();
@@ -84,21 +80,12 @@ function Suspeito() {
     }
     }
 
-    const recuperaAssassinatos = async () => {
-        try {
-        setListaAssassinatos(await getAssassinatosAPI());
-    } catch (err){
-        window.location.reload();
-        navigate("login", { replace : true});
-    }
-    }
-
-    const remover = async id => {
+    const remover = async email => {
        try{
         if (window.confirm('Deseja remover este objeto?')) {
-            let retornoAPI = await deleteSuspeitoAPI(id);
+            let retornoAPI = await deleteUsuarioAPI(email);
             setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
-            recuperaSuspeitos();
+            recuperaUsuarios();
         }
     } catch (err){
         window.location.reload();
@@ -107,23 +94,21 @@ function Suspeito() {
     }
 
     useEffect(() => {
-        recuperaSuspeitos();
-        recuperaAssassinatos();
+        recuperaUsuarios();
     }, []);
 
     return (
         <div style={{ backgroundColor: 'black', minHeight: '100vh', margin: 0, padding: 0 }}>
-            <SuspeitoContext.Provider value={{
+            <UsuarioContext.Provider value={{
                 alerta, listaObjetos, remover,
-                objeto, acaoCadastrar, handleChange, novoObjeto, editarObjeto,
-                listaAssassinatos
+                objeto, acaoCadastrar, handleChange, novoObjeto, editarObjeto
             }}>
                 <Carregando carregando={carregando}>
                     <Tabela />
                 </Carregando>
                 <Form />
-            </SuspeitoContext.Provider>
+            </UsuarioContext.Provider>
         </div>
     )
 }
-export default WithAuth(Suspeito);
+export default WithAuth(Usuario);

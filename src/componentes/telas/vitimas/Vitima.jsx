@@ -8,8 +8,12 @@ import { getAssassinatosAPI } from "../../../servicos/AssassinatosServico";
 import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
+import WithAuth from "../../../seguranca/WithAuth";
+import { useNavigate } from "react-router-dom";
 
 function Vitima() {
+
+    let navigate = useNavigate();
 
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
@@ -32,9 +36,14 @@ function Vitima() {
     }
 
     const editarObjeto = async id => {
-        setObjeto(await getVitimaPorIdAPI(id));
-        setEditar(true);
-        setAlerta({ status: "", message: "" });
+        try{
+            setObjeto(await getVitimaPorIdAPI(id));
+            setEditar(true);
+            setAlerta({ status: "", message: "" });
+        } catch (err){
+            window.location.reload();
+            navigate("login", { replace : true});
+        }
     }
 
     const acaoCadastrar = async e => {
@@ -47,11 +56,12 @@ function Vitima() {
             if (!editar) {
                 setEditar(true);
             }
-        } catch (err) {
-            console.log(err);
+        } catch (err){
+            window.location.reload();
+            navigate("login", { replace : true});
+        }
         }
         recuperaVitimas();
-    }
 
     const handleChange = (e) => {
         const name = e.target.name;
@@ -62,21 +72,36 @@ function Vitima() {
     const [carregando, setCarregando] = useState(false);
 
     const recuperaVitimas = async () => {
+        try{
         setCarregando(true);
         setListaObjetos(await getVitimasAPI());
         setCarregando(false);
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const recuperaAssassinatos = async () => {
+        try{
         setListaAssassinatos(await getAssassinatosAPI());
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const remover = async id => {
+        try{
         if (window.confirm('Deseja remover este objeto?')) {
             let retornoAPI = await deleteVitimaAPI(id);
             setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
             recuperaVitimas();
         }
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     useEffect(() => {
@@ -100,4 +125,4 @@ function Vitima() {
     )
 }
 
-export default Vitima;
+export default WithAuth(Vitima);

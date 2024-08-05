@@ -1,9 +1,11 @@
+import { getToken } from "../seguranca/Autenticacao";
 export const getVitimasAPI = async () => {
     const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/vitima`,
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -16,7 +18,8 @@ export const getVitimaPorIdAPI = async id => {
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -29,7 +32,8 @@ export const deleteVitimaAPI = async id => {
         {
             method : "DELETE",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -42,7 +46,8 @@ export const cadastraVitimaAPI = async (objeto, metodo) => {
         {
             method : metodo,
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             },
             body : JSON.stringify(objeto)
         });

@@ -9,8 +9,13 @@ import { getSuspeitosAPI } from "../../../servicos/SuspeitosServico";
 import Tabela from "./Tabela";
 import Form from "./Form";
 import Carregando from "../../comuns/Carregando";
+import WithAuth from "../../../seguranca/WithAuth";
+import { useNavigate } from "react-router-dom";
 
 function Assassinato() {
+
+    let navigate = useNavigate();
+
     const [alerta, setAlerta] = useState({ status: "", message: "" });
     const [listaObjetos, setListaObjetos] = useState([]);
     const [listaVitimas, setListaVitimas] = useState([]);
@@ -29,9 +34,14 @@ function Assassinato() {
     }
 
     const editarObjeto = async id => {
+        try{
         setObjeto(await getAssassinatoPorIdAPI(id));
         setEditar(true);
         setAlerta({ status: "", message: "" });
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const acaoCadastrar = async e => {
@@ -44,8 +54,9 @@ function Assassinato() {
             if (!editar) {
                 setEditar(true);
             }
-        } catch (err) {
-            console.log(err);
+        } catch (err){
+            window.location.reload();
+            navigate("login", { replace : true});
         }
         recuperaAssassinatos();
     }
@@ -59,25 +70,45 @@ function Assassinato() {
     const [carregando, setCarregando] = useState(false);
 
     const recuperaAssassinatos = async () => {
+        try {
         setCarregando(true);
         setListaObjetos(await getAssassinatosAPI());
         setCarregando(false);
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const recuperaVitimas = async () => {
+        try{
         setListaVitimas(await getVitimasAPI());
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const recuperaSuspeitos = async () => {
+        try{
         setListaSuspeitos(await getSuspeitosAPI());
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     const remover = async id => {
+       try{
         if (window.confirm('Deseja remover este objeto?')) {
             let retornoAPI = await deleteAssassinatoAPI(id);
             setAlerta({ status: retornoAPI.status, message: retornoAPI.message });
             recuperaAssassinatos();
         }
+    } catch (err){
+        window.location.reload();
+        navigate("login", { replace : true});
+    }
     }
 
     useEffect(() => {
@@ -101,5 +132,5 @@ function Assassinato() {
         </div>
     )
 }
-export default Assassinato;
+export default WithAuth(Assassinato);
 

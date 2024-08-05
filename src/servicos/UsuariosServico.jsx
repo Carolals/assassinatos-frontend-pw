@@ -1,6 +1,6 @@
 import { getToken } from "../seguranca/Autenticacao";
-export const getAssassinatosAPI = async () => {
-    const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/assassinato`,
+export const getUsuariosAPI = async () => {
+    const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/usuario`,
         {
             method : "GET",
             headers : {
@@ -12,9 +12,9 @@ export const getAssassinatosAPI = async () => {
     return data;
 }
 
-export const getAssassinatoPorIdAPI = async id => {
+export const getUsuarioPorEmailAPI = async email => {
     const response = await fetch(
-        `${process.env.REACT_APP_ENDERECO_API}/assassinato/${id}`,
+        `${process.env.REACT_APP_ENDERECO_API}/usuario/${email}`,
         {
             method : "GET",
             headers : {
@@ -26,9 +26,9 @@ export const getAssassinatoPorIdAPI = async id => {
     return data;
 }
 
-export const deleteAssassinatoAPI = async id => {
+export const deleteUsuarioAPI = async email => {
     const response = await fetch(
-        `${process.env.REACT_APP_ENDERECO_API}/assassinato/${id}`,
+        `${process.env.REACT_APP_ENDERECO_API}/usuario/${email}`,
         {
             method : "DELETE",
             headers : {
@@ -40,9 +40,9 @@ export const deleteAssassinatoAPI = async id => {
     return data;
 }
 
-export const cadastraAssassinatoAPI = async (objeto, metodo) => {
+export const cadastraUsuarioAPI = async (objeto, metodo) => {
     const response = await fetch(
-        `${process.env.REACT_APP_ENDERECO_API}/assassinato`,
+        `${process.env.REACT_APP_ENDERECO_API}/usuario`,
         {
             method : metodo,
             headers : {

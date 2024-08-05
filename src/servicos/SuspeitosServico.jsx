@@ -1,9 +1,11 @@
+import { getToken } from "../seguranca/Autenticacao";
 export const getSuspeitosAPI = async () => {
     const response = await fetch(`${process.env.REACT_APP_ENDERECO_API}/suspeito`,
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -16,7 +18,8 @@ export const getSuspeitoPorIdAPI = async id => {
         {
             method : "GET",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -29,7 +32,8 @@ export const deleteSuspeitoAPI = async id => {
         {
             method : "DELETE",
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             }
         });
     const data = await response.json();
@@ -42,7 +46,8 @@ export const cadastraSuspeitoAPI = async (objeto, metodo) => {
         {
             method : metodo,
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authorization" : getToken()
             },
             body : JSON.stringify(objeto)
         });
